@@ -1,18 +1,26 @@
 @startuml
-' ====== Delicia Café - UML con Admin ======
+' ====== Delicia Café - Diagrama de Clases ======
 skinparam classAttributeIconSize 0
 left to right direction
+
+' ===== Clases principales =====
+class Rol {
+  -id: int
+  +tipo: string  ' "Cliente" | "Staff" | "Admin"
+  +descripcion: string
+}
 
 class Usuario {
   -id: int
   +nombre: string
   +email: string
   +passwordHash: string
-  +rol: string  ' "cliente" | "staff"
+  +rolId: int
   +registrar(): void
   +iniciarSesion(email, password): bool
 }
 
+' ===== Admin hereda de Usuario =====
 class Admin {
   -id: int
   +nombre: string
@@ -46,8 +54,6 @@ class Categoria {
 
 class Reserva {
   -id: int
-  +nombreCliente: string
-  +correo: string
   +fecha: date
   +hora: time
   +personas: int
@@ -57,19 +63,26 @@ class Reserva {
   +cancelar(): void
 }
 
-' 👉 Se mueve EstadoReserva cerca de Producto
 class EstadoReserva {
   Pendiente
   Confirmada
   Cancelada
 }
 
-' Relaciones
+' ===== Relaciones entre clases =====
+Rol "1" --> "0..*" Usuario : define tipo
+Usuario <|-- Admin : hereda
 Usuario "1" --> "0..*" Reserva : crea
-Admin "1" --> "0..*" Reserva : administra
 Admin "1" --> "0..*" Producto : gestiona
 Producto "0..*" --> "1" Categoria : clasifica
 Reserva --> EstadoReserva
 Producto --> EstadoReserva : usa
-@enduml
 
+' ===== Estilo visual (Delicia Café) =====
+skinparam class {
+  BackgroundColor #fff8f0
+  BorderColor #b87b50
+  ArrowColor #b87b50
+  FontColor #3d2b1f
+}
+@enduml

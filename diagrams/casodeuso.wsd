@@ -1,34 +1,45 @@
 @startuml
-' ====== Delicia Café - Casos de Uso ======
+' ====== Delicia Café - Diagrama de Casos de Uso ======
 left to right direction
 
+' ==== Actores ====
 actor Usuario
 actor Admin
 
-' --- Usuario ---
-Usuario --> (Navegar inicio)
+' ==== Casos de uso del Usuario ====
+Usuario --> (Navegar por el inicio)
 Usuario --> (Ver menú)
-Usuario --> (Ver pastelería)
+Usuario --> (Ver sección de pastelería)
 Usuario --> (Enviar mensaje de contacto)
-Usuario --> (Crear reserva)
 Usuario --> (Registrarse)
 Usuario --> (Iniciar sesión)
+Usuario --> (Crear reserva)
 
+' Relaciones entre casos del Usuario
 (Crear reserva) ..> (Iniciar sesión) : <<include>>
+(Enviar mensaje de contacto) ..> (Iniciar sesión) : <<extend>>
 
-' --- Admin ---
+' ==== Casos de uso del Admin ====
 Admin --> (Gestionar productos)
 Admin --> (Gestionar reservas)
 Admin --> (Gestionar usuarios)
+Admin --> (Monitorear sistema)
 
+' Relaciones entre casos del Admin
 (Gestionar productos) ..> (Iniciar sesión) : <<include>>
 (Gestionar reservas) ..> (Iniciar sesión) : <<include>>
 (Gestionar usuarios) ..> (Iniciar sesión) : <<include>>
+(Monitorear sistema) ..> (Iniciar sesión) : <<include>>
 
+' ==== Estilo visual ====
 skinparam usecase {
   BackgroundColor #fff8f0
   BorderColor #b87b50
   ArrowColor #b87b50
   ActorBorderColor #8c5a3c
+  ActorFontColor #5a3b2e
+  FontColor #3d2b1f
 }
+
+title Delicia Café ☕\nDiagrama de Casos de Uso (Usuario y Admin)
 @enduml
