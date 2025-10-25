@@ -107,3 +107,4 @@ Contiene los *diagramas UML* del sistema:
 | 2      | Redacción de requisitos y análisis de funcionalidades      | Felipe         |
 | 3      | Plan de implementación y tareas técnicas                   | Nicolás        |
 | 4      | Implementación del prototipo y preparación de presentación | Todo el equipo |
+

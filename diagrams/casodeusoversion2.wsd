@@ -1,0 +1,39 @@
+@startuml
+class Database {
+  - static instance: Database
+  - connection: PDO
+  - Database()
+  + static getInstance(): Database
+  + getConnection(): PDO
+}
+@enduml
+
+
+@startuml
+
+' ====== Clases principales ======
+abstract class Producto {
+  - nombre: String
+  - precio: float
+  + __construct(nombre, precio)
+  + mostrarDetalle(): String
+}
+
+class Cafe extends Producto {
+  + mostrarDetalle(): String
+}
+
+class Pastel extends Producto {
+  + mostrarDetalle(): String
+}
+
+class ProductoFactory {
+  + static crearProducto(tipo: String, nombre: String, precio: float): Producto
+}
+
+' ====== Relaciones ======
+Producto <|-- Cafe
+Producto <|-- Pastel
+ProductoFactory ..> Producto : crea instancias de
+
+@enduml
