@@ -1,0 +1,315 @@
+/* =============================================
+   VARIABLES GLOBALES Y RESET
+============================================= */
+:root {
+    /* Paleta de colores */
+    --brown: #6B4423;
+    --light-brown: #967259;
+    --dark-brown: #4A3221;
+    --cream: #FFF8E7;
+    --coffee: #3F2305;
+    --accent: #C68B59;
+    
+    /* Efectos */
+    --shadow-sm: 0 5px 15px rgba(0,0,0,0.1);
+    --shadow-lg: 0 15px 35px rgba(0,0,0,0.15);
+    --radius: 15px;
+    --transition: 0.3s ease;
+
+    /* Variables para texto */
+    --text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    --heading-color: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: color var(--transition), 
+                background-color var(--transition), 
+                transform var(--transition);
+}
+
+/* =============================================
+   UTILIDADES Y CLASES BASE
+============================================= */
+.bg-brown { background-color: var(--brown) !important; }
+.text-brown { color: var(--brown) !important; }
+.hover-lift { transition: transform var(--transition); }
+.hover-lift:hover { transform: translateY(-5px); }
+
+/* Botones personalizados */
+.btn-brown {
+    background-color: var(--brown);
+    border-color: var(--brown);
+    color: white;
+    transition: all var(--transition);
+}
+
+.btn-brown:hover {
+    background-color: var(--light-brown);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* =============================================
+   HERO SECTIONS
+============================================= */
+[class^="hero-section"] {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    color: var(--heading-color);
+}
+
+.hero-section {
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+        url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+}
+
+.hero-section-menu {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+        url('https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80');
+}
+
+.hero-section-pasteleria {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+        url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=2078&q=80');
+}
+
+.hero-section-reservas {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+}
+
+.hero-section-contacto {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+        url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+}
+
+.hero-title {
+    font-weight: 700;
+    text-shadow: var(--text-shadow);
+    margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    text-shadow: var(--text-shadow);
+    margin-bottom: 2rem;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, 
+        rgba(240, 238, 238, 0.226) 0%, 
+        rgba(255, 253, 253, 0.247) 100%
+    );
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+    color: var(--heading-color);
+}
+
+/* =============================================
+   COMPONENTES
+============================================= */
+/* Cards Base */
+.base-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: none;
+    transition: all var(--transition);
+}
+
+.base-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Heredar estilos base */
+.product-card,
+.testimonial-card,
+.feature-card { @extend .base-card; }
+
+/* =============================================
+   MEDIA QUERIES
+============================================= */
+@media (max-width: 768px) {
+    [class^="hero-section"] {
+        min-height: 40vh;
+        text-align: center;
+    }
+    
+    .hero-section {
+        min-height: 70vh;
+    }
+    
+    .display-3 { font-size: 2rem; }
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section { min-height: 60vh; }
+    .display-2 { font-size: 2rem; }
+    .card-padding { padding: 1rem; }
+}
+
+/* Botones personalizados */
+.btn-brown {
+    background-color: var(--brown);
+    border-color: var(--brown);
+    color: white;
+}
+
+.btn-brown:hover {
+    background-color: var(--light-brown);
+    border-color: var(--light-brown);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+}
+
+.btn-outline-brown {
+    border-color: var(--brown);
+    color: var(--brown);
+}
+
+.btn-outline-brown:hover {
+    background-color: var(--brown);
+    border-color: var(--brown);
+    color: white;
+}
+
+.btn-latte {
+    background-color: var(--latte);
+    border-color: var(--latte);
+    color: var(--espresso);
+}
+
+.btn-latte:hover {
+    background-color: var(--coffee);
+    border-color: var(--coffee);
+    color: white;
+}
+
+/* =============================================
+   BOTONES MEJORADOS
+============================================= */
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #ffb300);
+    border: none;
+    color: #000;
+    font-weight: 600;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ffb300, #ffa000);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+}
+
+/* =============================================
+   ANIMACIONES
+============================================= */
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+    40% { transform: translateY(-10px) translateX(-50%); }
+    60% { transform: translateY(-5px) translateX(-50%); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Clases de animación */
+.animate-slide-up { animation: slideUp 1s ease-out; }
+.animate-slide-left { animation: slideLeft 1s ease-out; }
+.animate-fade-in { animation: fadeIn 1s ease-out; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-pulse { animation: pulse 2s infinite; }
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+/* =============================================
+   PERSONALIZACIÓN DE BOOTSTRAP
+============================================= */
+
+/* Alertas personalizadas */
+.alert-brown {
+    background-color: rgba(139, 69, 19, 0.1);
+    border-color: var(--brown);
+    color: var(--dark-brown);
+}
+
+/* Cards con bordes personalizados */
+.card {
+    border: 1px solid rgba(139, 69, 19, 0.1);
+}
+
+/* Mejora las tablas */
+.table-hover tbody tr:hover {
+    background-color: rgba(139, 69, 19, 0.05);
+}
