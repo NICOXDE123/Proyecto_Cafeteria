@@ -148,7 +148,12 @@
 /* Heredar estilos base */
 .product-card,
 .testimonial-card,
-.feature-card { @extend .base-card; }
+.feature-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: none;
+    transition: all var(--transition);
+}
 
 /* =============================================
    MEDIA QUERIES
