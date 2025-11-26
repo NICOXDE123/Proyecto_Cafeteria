@@ -46,9 +46,6 @@ Marret-Cafe
 | `backend/config/`                    | Configuración del servidor y base de datos.                             |
 | `backend/config/database.js`         | Conexión con la base de datos.                                          |
 | `backend/config/server.js`           | Configuración del servidor Express.                                     |
-| **`base_datos/`**                    | Carpeta con información de la base de datos.                           |
-| `base_datos/diagrama_entidad_relación.png` | Diagrama ER de la base de datos.                                    |
-| `base_datos/script_sql_marret.sql`   | Script SQL para crear las tablas de la base de datos.                  |
 
 **Descripción del Proyecto**
 
