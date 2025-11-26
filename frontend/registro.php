@@ -1,56 +1,50 @@
 <?php
 session_start();
-// require_once '../config/config.php';
-// require_once '../models/Usuario.php';
-// require_once '../models/Rol.php';
+require_once '../backend/config/db.php';
+require_once '../backend/models/Usuario.php';
+require_once '../backend/models/Rol.php';
 
-// $error = '';
-// $exito = '';
+$error = '';
+$exito = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $password = $_POST['password'];
-    $confirmar_password = $_POST['confirmar_password'];
-    
-    $usuarioModel = new Usuario();
-    
-    // Verificar si el email ya existe
-    if ($usuarioModel->existeEmail($email)) {
-        $error = 'Este email ya está registrado. ¿Quieres <a href="login.php" class="alert-link">iniciar sesión</a>?';
-    } elseif ($nombre && $email && $password) {
-        if ($password === $confirmar_password) {
-            if (strlen($password) >= 6) {
-                $usuarioId = $usuarioModel->registrar([
-                    'nombre' => $nombre,
-                    'email' => $email,
-                    'password' => $password,
-                    'rol_id' => 1 // Cliente por defecto
-                ]);
-                
-                if ($usuarioId) {
-                    // Iniciar sesión automáticamente
-                    $usuario = $usuarioModel->iniciarSesion($email, $password);
-                    if ($usuario) {
-                        $_SESSION['usuario'] = $usuario;
-                        $_SESSION['notificacion'] = [
-                            'tipo' => 'exito',
-                            'mensaje' => '¡Cuenta creada exitosamente! Bienvenido a Delicia Café.'
-                        ];
-                        header('Location: index.php');
-                        exit;
-                    }
-                } else {
-                    $error = 'Error al crear la cuenta. Por favor intenta nuevamente.';
-                }
-            } else {
-                $error = 'La contraseña debe tener al menos 6 caracteres.';
-            }
-        } else {
-            $error = 'Las contraseñas no coinciden.';
-        }
+
+    // Sanitizar datos (compatible con PHP 8)
+    $nombre = htmlspecialchars(trim($_POST['nombre']));
+    $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
+    $password = trim($_POST['password']);
+    $confirmar_password = trim($_POST['confirmar_password']);
+
+    // Validar campos vacíos
+    if (!$nombre || !$email || !$password || !$confirmar_password) {
+        $error = "Todos los campos son obligatorios.";
+    } elseif ($password !== $confirmar_password) {
+        $error = "Las contraseñas no coinciden.";
+    } elseif (strlen($password) < 6) {
+        $error = "La contraseña debe tener al menos 6 caracteres.";
     } else {
-        $error = 'Por favor completa todos los campos correctamente.';
+
+        // Instanciar el modelo
+        $usuarioModel = new Usuario();
+
+        // Verificar si email existe
+        if ($usuarioModel->existeEmail($email)) {
+            $error = "Este correo ya está registrado.";
+        } else {
+            // Registrar usuario
+            $data = [
+                'nombre' => $nombre,
+                'email' => $email,
+                'password' => $password,
+                'rol_id' => 1  // cliente
+            ];
+
+            if ($usuarioModel->registrar($data)) {
+                $exito = true;
+            } else {
+                $error = "Error al registrar usuario. Intenta más tarde.";
+            }
+        }
     }
 }
 ?>
@@ -79,13 +73,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <h3 class="mb-0"><i class="bi bi-person-plus me-2"></i>Crear Cuenta</h3>
                         </div>
                         <div class="card-body p-4">
-                            <!-- <?php if ($error): ?>
+                            <?php if ($error): ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <i class="bi bi-exclamation-triangle me-2"></i>
                                     <?php echo strip_tags($error, '<a>'); ?>
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
-                            <?php endif; ?> -->
                             <?php endif; ?>
                             
                             <?php if ($exito): ?>

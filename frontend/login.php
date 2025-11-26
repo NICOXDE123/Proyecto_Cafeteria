@@ -1,45 +1,64 @@
 <?php
-// session_start();
-// require_once '../config/config.php';
-// require_once '../models/Usuario.php';
+session_start();
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $password = $_POST['password'];
-    
-    $usuarioModel = new Usuario();
-    
+
     if ($email && $password) {
-        $usuario = $usuarioModel->iniciarSesion($email, $password);
-        
-        if ($usuario) {
-            $_SESSION['usuario'] = $usuario;
-            
-            $_SESSION['notificacion'] = [
-                'tipo' => 'exito',
-                'mensaje' => '¡Inicio de sesión exitoso! Bienvenido a Delicia Café.'
-            ];
-            
-            // Redirigir según el rol
-            if ($usuario['rol_tipo'] === 'Admin' || $usuario['rol_tipo'] === 'Staff') {
-                $redirect = '../backend/index.php';
+
+        $apiUrl = "http://localhost/UML_Cafeteria/backend/api/auth.php";
+
+        $data = [
+            'email' => $email,
+            'password' => $password
+        ];
+
+        $options = [
+            "http" => [
+                "header"  => "Content-Type: application/json\r\n",
+                "method"  => "POST",
+                "content" => json_encode($data)
+            ]
+        ];
+
+        $context = stream_context_create($options);
+        $response = file_get_contents($apiUrl, false, $context);
+
+        $result = json_decode($response, true);
+
+        if (isset($result['success']) && $result['success'] === true) {
+
+            $_SESSION['usuario'] = $result['usuario'];
+
+            // Rol REAL desde la BD
+            $rol = $result['usuario']['rol_id'];
+
+            if ($rol == 3) {
+                header("Location: admin/dashboard.php");
+            } elseif ($rol == 2) {
+                header("Location: staff/dashboard.php");
             } else {
-                $redirect = $_SESSION['redirect_url'] ?? 'index.php';
-                unset($_SESSION['redirect_url']);
+                header("Location: index.php");
             }
-            
-            header('Location: ' . $redirect);
-            exit;
+
+            exit();
+
         } else {
-            $error = 'Email o contraseña incorrectos';
+            $error = "Credenciales incorrectas";
         }
+
     } else {
-        $error = 'Por favor completa todos los campos';
+        $error = "Todos los campos son obligatorios";
     }
 }
 ?>
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -54,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="assets/css/custom.css" rel="stylesheet">
 </head>
 <body>
-    <?php include 'views/header.php'; ?>
+<?php include 'views/header.php'; ?>
 
     <section class="py-5 bg-light min-vh-100 d-flex align-items-center">
         <div class="container">
@@ -71,53 +90,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             <?php endif; ?>
-                            
-                            <form method="POST">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-envelope"></i>
-                                        </span>
-                                        <input type="email" class="form-control" id="email" name="email" required 
-                                               value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
-                                               placeholder="tu@email.com">
-                                    </div>
+                            <!-- reemplaza el formulario existente por este -->
+                            <form action="login.php" method="POST">
+                                 <div class="mb-3">
+                                     <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
-                                
+
                                 <div class="mb-4">
                                     <label for="password" class="form-label">Contraseña</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">
-                                            <i class="bi bi-lock"></i>
-                                        </span>
-                                        <input type="password" class="form-control" id="password" name="password" required
-                                               placeholder="Ingresa tu contraseña">
-                                    </div>
+                                         <input type="password" class="form-control" id="password" name="password" required>
                                 </div>
-                                
+
                                 <div class="d-grid mb-3">
                                     <button type="submit" class="btn btn-primary btn-lg">
-                                        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
-                                    </button>
-                                </div>
-                                
-                                <div class="text-center">
-                                    <p class="mb-0">¿No tienes cuenta? 
-                                        <a href="registro.php" class="text-brown fw-bold">Regístrate aquí</a>
-                                    </p>
-                                </div>
-                            </form>
+                                      <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                                </button>
+                                    </div>
+                                 </form>
+                              
+
                             
-                            <hr class="my-4">
-                            
-                            <div class="text-center">
-                                <small class="text-muted">
-                                    <strong>Credenciales de prueba:</strong><br>
-                                    Cliente: cliente@deliciacafe.cl / password<br>
-                                    Staff: staff@deliciacafe.cl / password<br>
-                                    Admin: admin@deliciacafe.cl / password
-                                </small>
                             </div>
                         </div>
                     </div>

@@ -1,8 +1,14 @@
 <?php
- session_start();
- $current_page = basename($_SERVER['PHP_SELF']);
- $usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : null;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once __DIR__ . '/../../backend/helpers/auth.php';
+
+$current_page = $current_page ?? basename($_SERVER['PHP_SELF']);
+$usuario = getCurrentUser();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -54,8 +60,27 @@
                             <i class="bi bi-envelope me-1"></i>Contacto
                         </a>
                     </li>
+
+                    <?php if (isLoggedIn()): ?>
+                    <li class="nav-item">
+                        <a href="../backend/logout.php" class="nav-link">Cerrar Sesión</a>
+                    </li>
+
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol_id'] == 3): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin/dashboard.php">Panel Administrador</a>
+                    </li>
+
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['usuario']) && $_SESSION['usuario']['rol_id'] == 2): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="staff/dashboard.php">Panel Staff</a>
+                    </li>
+                    <?php endif; ?>
+                    
+
                 </ul>
-                
                 <div class="navbar-nav">
                     <?php if ($usuario): ?>
                         <div class="nav-item dropdown">
@@ -77,8 +102,7 @@
                         <a class="nav-link me-3" href="login.php">
                             <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
                         </a>
-                        <a class="btn btn-outline-light btn-sm" href="registro.php">
-                            Registrarse
+                        <a class="btn btn-outline-light btn-sm" href="registro.php"> Registrarse
                         </a>
                     <?php endif; ?>
                 </div>

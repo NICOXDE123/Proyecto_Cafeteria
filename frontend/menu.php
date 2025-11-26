@@ -1,18 +1,19 @@
 <?php
-// session_start();
-// require_once '../config/config.php';
-// require_once '../models/Producto.php';
-// require_once '../models/Categoria.php';
+session_start();
+require_once '../backend/config/db.php';
+require_once '../backend/models/Producto.php';
+require_once '../backend/models/Categoria.php';
+require_once '../backend/helpers/auth.php'; 
 
-// $productoModel = new Producto();
-// $categoriaModel = new Categoria();
+$productoModel = new Producto();
+$categoriaModel = new Categoria();
 
-// $categorias = $categoriaModel->obtenerTodas();
-// $productosPorCategoria = [];
+$categorias = $categoriaModel->obtenerTodas();
+$productosPorCategoria = [];
 
-// foreach ($categorias as $categoria) {
-    // $productosPorCategoria[$categoria['id']] = $productoModel->obtenerPorCategoria($categoria['id']);
-//}
+foreach ($categorias as $categoria) {
+    $productosPorCategoria[$categoria['id']] = $productoModel->obtenerPorCategoria($categoria['id']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -97,24 +98,19 @@
                                         </div>
                                         <p class="card-text text-muted flex-grow-1"><?php echo htmlspecialchars($producto['descripcion']); ?></p>
                                         
+                                        <!-- INSERTAR AQUI: formulario para agregar al carrito -->
+                                        <form method="POST" action="carrito.php" class="mt-2 w-100">
+                                            <input type="hidden" name="producto_id" value="<?php echo $producto['id']; ?>">
+                                            <input type="hidden" name="cantidad" value="1">
+                                            <button type="submit" class="btn btn-primary btn-sm w-100">Agregar al carrito</button>
+                                        </form>
+                                        
                                         <?php if ($producto['stock'] > 0): ?>
                                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                                 <small class="text-success">
                                                     <i class="bi bi-check-circle me-1"></i>Disponible
                                                 </small>
-                                                <?php if (isLoggedIn()): ?>
-                                                    <form method="POST" action="agregar_carrito.php" class="d-inline">
-                                                        <input type="hidden" name="producto_id" value="<?php echo $producto['id']; ?>">
-                                                        <input type="hidden" name="cantidad" value="1">
-                                                        <button type="submit" class="btn btn-primary btn-sm">
-                                                            <i class="bi bi-cart-plus me-1"></i>Agregar
-                                                        </button>
-                                                    </form>
-                                                <?php else: ?>
-                                                    <button class="btn btn-primary btn-sm" onclick="requiereLogin()">
-                                                        <i class="bi bi-cart-plus me-1"></i>Agregar
-                                                    </button>
-                                                <?php endif; ?>
+                                                <!-- ...existing add-to-cart logic (puedes quitarla si usas el nuevo formulario) -->
                                             </div>
                                         <?php else: ?>
                                             <div class="mt-auto">

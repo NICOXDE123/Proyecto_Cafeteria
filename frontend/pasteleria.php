@@ -1,15 +1,16 @@
 <?php
-// session_start();
-// require_once '../config/config.php';
-// require_once '../models/Producto.php';
-// require_once '../models/Categoria.php';
+ session_start();
+require_once '../backend/config/db.php';
+require_once '../backend/models/Producto.php';
+require_once '../backend/models/Categoria.php';
+require_once '../backend/helpers/auth.php';
 
-// $productoModel = new Producto();
-//$categoriaModel = new Categoria();
+$productoModel = new Producto();
+$categoriaModel = new Categoria();
 
 // Obtener categoría de pastelería
-// $categoriaPasteleria = $categoriaModel->obtenerPorNombre('Pastelería');
-// $productosPasteleria = $productoModel->obtenerPorCategoria($categoriaPasteleria['id']);
+$categoriaPasteleria = $categoriaModel->obtenerPorNombre('Pastelería');
+$productosPasteleria = $productoModel->obtenerPorCategoria($categoriaPasteleria['id']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -121,11 +122,12 @@
                                 
                                 <?php if ($producto['stock'] > 0): ?>
                                     <?php if (isLoggedIn()): ?>
-                                        <form method="POST" action="agregar_carrito.php" class="d-inline">
-                                            <input type="hidden" name="producto_id" value="<?php echo $producto['id']; ?>">
+                                        <!-- REEMPLAZAR por el nuevo formulario -->
+                                        <form action="carrito.php" method="POST" class="w-100">
+                                            <input type="hidden" name="producto_id" value="<?= $producto['id'] ?>">
                                             <input type="hidden" name="cantidad" value="1">
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="bi bi-cart-plus me-1"></i>Agregar
+                                            <button type="submit" class="btn btn-brown w-100 mt-2">
+                                                <i class="bi bi-cart-plus me-1"></i>Agregar al Carrito
                                             </button>
                                         </form>
                                     <?php else: ?>

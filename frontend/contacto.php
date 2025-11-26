@@ -1,26 +1,26 @@
 <?php
-// session_start();
-//require_once '../config/config.php';
+session_start();
+require_once '../backend/config/db.php';
+require_once '../backend/helpers/auth.php';
 
-// $exito = '';
-// $error = '';
+$exito = '';
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    $asunto = filter_input(INPUT_POST, 'asunto', FILTER_SANITIZE_STRING);
-    $mensaje = filter_input(INPUT_POST, 'mensaje', FILTER_SANITIZE_STRING);
-    
+
+    // Sanitización moderna
+    $nombre  = htmlspecialchars(trim($_POST['nombre'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $email   = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $asunto  = htmlspecialchars(trim($_POST['asunto'] ?? ''), ENT_QUOTES, 'UTF-8');
+    $mensaje = htmlspecialchars(trim($_POST['mensaje'] ?? ''), ENT_QUOTES, 'UTF-8');
+
     if ($nombre && $email && $asunto && $mensaje) {
         // Simular envío de email
-        $exito = '¡Mensaje enviado correctamente! Te contactaremos pronto.';
-        
-        // Aquí iría el código real para enviar el email
-        // mail('contacto@deliciacafe.cl', $asunto, $mensaje, "From: $email");
-        
+        $exito = "¡Tu mensaje ha sido enviado exitosamente! Nos pondremos en contacto pronto.";
     } else {
-        $error = 'Por favor completa todos los campos correctamente.';
+        $error = "Por favor completa todos los campos correctamente.";
     }
+
 }
 ?>
 <!DOCTYPE html>
@@ -183,24 +183,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <!-- Mapa -->
-                    <div class="card border-0 shadow-sm mt-4">
-                        <div class="card-body p-4">
-                            <h5 class="card-title text-brown mb-3">Encuéntranos</h5>
-                            <div class="map-container" style="height: 300px; background: #f8f9fa; border-radius: 8px;">
-                                <div class="h-100 d-flex align-items-center justify-content-center text-muted">
-                                    <div class="text-center">
-                                        <i class="bi bi-map display-4 mb-2"></i>
-                                        <p>Av. Principal 123, Santiago<br>
-                                        <small>Próximamente: Mapa interactivo</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <?php include 'views/footer.php'; ?>
