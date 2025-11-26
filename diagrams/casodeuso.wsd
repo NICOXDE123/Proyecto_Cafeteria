@@ -43,3 +43,38 @@ skinparam usecase {
 
 title Delicia Café ☕\nDiagrama de Casos de Uso (Usuario y Admin)
 @enduml
+
+
+abstract class Producto {
+ protected $nombre;
+ protected $precio;
+
+ public function __construct($nombre, $precio) {
+     $this->nombre = $nombre;
+     $this->precio = $precio;
+ }
+
+ public abstract function mostrarDetalle();
+}
+
+class Cafe extends Producto {
+ public function mostrarDetalle() {
+     return "☕ Café: {$this->nombre} - $ {$this->precio}";
+ }
+}
+
+class Pastel extends Producto {
+ public function mostrarDetalle() {
+     return "🍰 Pastel: {$this->nombre} - $ {$this->precio}";
+ }
+}
+
+class ProductoFactory {
+ public static function crearProducto($tipo, $nombre, $precio) {
+     switch ($tipo) {
+         case "cafe": return new Cafe($nombre, $precio);
+         case "pastel": return new Pastel($nombre, $precio);
+         default: throw new Exception("Tipo inválido");
+     }
+ }
+}
