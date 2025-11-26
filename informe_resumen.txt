@@ -1,0 +1,186 @@
+📘 README – Marret Café
+
+Sistema Web – Diseño y Desarrollo de Software
+
+📌 Descripción General
+
+Marret Café es un sistema web diseñado para digitalizar procesos básicos de una cafetería artesanal.
+Permite a los usuarios iniciar sesión y visualizar el menú de productos (cafés y pasteles) de forma dinámica, utilizando PHP como backend y MySQL como base de datos.
+
+El proyecto aplica patrones de diseño profesionales y una arquitectura modular en 3 capas.
+
+🚀 Características Principales
+
+Inicio de sesión de usuario.
+
+Visualización dinámica del menú (cafés y pasteles).
+
+Conexión estable a MySQL mediante Singleton.
+
+Creación de productos con Factory.
+
+API REST básica con rutas claras.
+
+Arquitectura organizada en 3 capas (Presentación – Lógica – Datos).
+
+Pruebas básicas de endpoints con Postman.
+
+🏗️ Arquitectura del Sistema
+
+El sistema está construido bajo una arquitectura en tres capas:
+
+1️⃣ Capa de Presentación
+
+HTML, CSS, Bootstrap
+
+Formularios (login)
+
+Lista de productos
+
+2️⃣ Capa de Lógica y Negocio
+
+Controladores: autenticación, productos
+
+Servicios: validaciones y reglas de negocio
+
+API REST: rutas /productos, /login
+
+Singleton: conexión única a MySQL
+
+Factory: creación de productos del menú
+
+3️⃣ Capa de Datos
+
+Base de datos MySQL
+
+Tablas: usuarios y productos
+
+Consultas SQL parametrizadas para mayor seguridad
+
+🛠️ Tecnologías Utilizadas
+
+PHP 8
+
+MySQL
+
+HTML / CSS / Bootstrap
+
+JavaScript (mínimo)
+
+Postman (pruebas)
+
+Visual Studio Code
+
+Git & GitHub
+
+📦 Instalación y Ejecución (SIN DOCKER)
+🔹 1. Requisitos previos
+
+Asegúrate de tener instalado:
+
+XAMPP / WAMP / Laragon o servidor local PHP
+
+MySQL
+
+phpMyAdmin (opcional)
+
+🔹 2. Clonar el proyecto
+git clone https://github.com/TuUsuario/marret-cafe.git
+cd marret-cafe
+
+🔹 3. Configurar base de datos
+
+Crear una base de datos llamada marret_cafe
+
+Importar el archivo marret_cafe.sql ubicado en /database
+
+Revisar las credenciales dentro de la clase Singleton:
+
+$host = 'localhost';
+$dbname = 'marret_cafe';
+$user = 'root';
+$pass = '';
+
+
+Ajustar según tu entorno.
+
+🔹 4. Ejecutar el proyecto
+
+Colocar la carpeta del proyecto dentro de:
+
+xampp/htdocs/
+
+wamp/www/
+
+o la carpeta que use tu servidor local.
+
+Luego abrir en el navegador:
+
+http://localhost/marret-cafe/
+
+
+La API estará disponible en:
+
+http://localhost/marret-cafe/api/
+
+🧪 Pruebas con Postman
+
+Endpoints principales:
+
+Método	Ruta	Descripción
+GET	/api/productos	Listar productos
+POST	/api/login	Inicio de sesión
+
+Pruebas realizadas:
+
+Casos exitosos (200 OK)
+
+Campos faltantes (400 Bad Request)
+
+Recurso inexistente (404 Not Found)
+
+🤖 Uso de IA
+
+Se utilizó IA (ChatGPT y DeepSeek) solo como apoyo en:
+
+redacción del informe,
+
+sugerencias de patrones de diseño,
+
+mejora de documentación.
+
+Todas las decisiones técnicas y el código final fueron validados por el equipo.
+
+📈 Estado Actual
+
+Login funcional
+
+Visualización del menú desde MySQL
+
+API principal estable
+
+Proyecto totalmente funcional en entorno local
+
+Código versionado en GitHub
+
+📅 Próximos Pasos
+
+Módulo de administrador
+
+CRUD de productos completo desde frontend
+
+Gestión de stock
+
+Sistema de reservas completo
+
+Mejoras visuales del frontend
+
+👥 Equipo de Desarrollo
+
+Team Marret
+
+Nicolás Huenchual
+
+Felipe Salazar
+
+Michael Flores
